@@ -14,7 +14,7 @@
     <% @posts.each do |post| %>
       <tr>
         <td><%= post.name %></td>
-        <td><%= post.photo %></td>
+        <td><%=  image_tag post.photo.thumb.url %></td>
         <td><%= truncate(post.caption, length: 10) %></td>
         <td><%= link_to 'Show', post %></td>
       </tr>
