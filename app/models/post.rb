@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
 
   MINIMUM_POST_INTERVAL_SEC = 3
+
   
   validate :post_interval_time
 
