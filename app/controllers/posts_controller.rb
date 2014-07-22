@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate
 
   # GET /posts
   # GET /posts.json
@@ -73,5 +73,14 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:photo, :caption)
+    end
+
+    def authenticate
+      if from_iphone?
+        resource = User.first # TODO 
+        sign_in :user, resource
+       else
+        authenticate_user!
+      end
     end
 end

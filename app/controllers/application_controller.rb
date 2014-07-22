@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def from_iphone?
+    request.format == "application/json" 
+  end
+
   protected
 
   def configure_permitted_parameters
