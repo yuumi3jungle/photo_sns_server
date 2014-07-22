@@ -12,7 +12,7 @@ RSpec.describe Post, :type => :model do
     post = Post.new(caption: 'test1', user_id:1)
     post.save
 
-    sleep 4  # TODO better method 
+    allow(Time).to receive(:now) { Time.new + 4 }
     post = Post.new(caption: 'test2', user_id:1)
     expect(post.save).to be_truthy
   end
