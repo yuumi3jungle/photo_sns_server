@@ -1,18 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @post.user.name %>
-</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= photo_title(@post)%></h3>
+  </div>
+  <div class="panel-body">
+    <p><%= image_tag @post.photo.url, class: "img-responsive" %></p>
+    <p><%= simple_format(@post.caption) %></p>
+  </div>
+  <div class="panel-footer">
+    <%= link_to '戻る', posts_path, class:"btn btn-default" %>
+  </div>
+</div>
 
-<p>
-  <strong>Photo:</strong>
-  <%= image_tag @post.photo.url %>
-</p>
 
-<p>
-  <strong>Caption:</strong>
-  <%= simple_format(@post.caption) %>
-</p>
-
-<%= link_to 'Back', posts_path %>

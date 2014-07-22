@@ -1,28 +1,49 @@
-<h1>Listing posts</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Photo</th>
-      <th>Caption</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title row">
+      <h3 class="col-md-3">写真SNS</h3>
+      <div class="col-md-3 col-md-offset-6 text-right hidden-xs" style="margin-top: 20px;">
+        ようこそ <%= current_user.name%> さん
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
 
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.user.name %></td>
-        <td><%=  image_tag post.photo.thumb.url %></td>
-        <td><%= truncate(post.caption, length: 10) %></td>
-        <td><%= link_to 'Show', post %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <% columns = 2 %>
+    <table class="table table-bordered">
 
-<br>
+      <tbody>
+        <% @posts.each_with_index do |post , i| %>
+          <% if i % columns == 0 %>
+          <tr>
+          <% end %>
+            <td><%= link_to image_tag(post.photo.thumb.url, 
+                       popover_data_tag(photo_title(post),
+                       post.caption)), post %></td>
+          <% if i % columns == (columns - 1) %>
+          </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
 
-<%= link_to 'New Post', new_post_path %>
-<%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-md-6">
+      <%= link_to '新規投稿', new_post_path, class:"btn btn-success" %>
+      </div>
+      <div  class="col-md-6 text-right">
+      <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class:"btn btn-default" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+    $("img[data-toggle]").popover();   
+});
+<% end %>
