@@ -1,0 +1,19 @@
+require 'rails_helper'
+
+RSpec.describe Post, :type => :model do
+  it "保存してから3秒以内は保存出来ない" do
+    post = Post.new(caption: 'test1', user_id:1)
+    post.save
+    post = Post.new(caption: 'test2', user_id:1)
+    expect(post.save).to be_falsey
+  end
+
+  it "保存してから3秒以後は保存出来る" do
+    post = Post.new(caption: 'test1', user_id:1)
+    post.save
+
+    sleep 4  # TODO better method 
+    post = Post.new(caption: 'test2', user_id:1)
+    expect(post.save).to be_truthy
+  end
+end
