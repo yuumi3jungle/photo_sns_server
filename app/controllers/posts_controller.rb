@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authenticate
+  skip_before_action :verify_authenticity_token, if: :from_iphone?
 
   # GET /posts
   # GET /posts.json
@@ -25,7 +26,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(post_params_with_image_data)
     @post.user_id = current_user.id
 
     respond_to do |format|
@@ -44,7 +45,7 @@ class PostsController < ApplicationController
   def update
     @post.user_id = current_user.id
     respond_to do |format|
-      if @post.update(post_params)
+      if @post.update(post_params_with_image_data)
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
@@ -73,6 +74,24 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:photo, :caption)
+    end
+
+    def post_params_with_image_data
+      parameters = post_params
+      if params[:post][:image_data]
+        parameters[:photo] = parse_image_data(params[:post][:image_data])
+      end
+      parameters
+    end
+
+    def parse_image_data(image_data)
+      tempfile = StringIO.new(Base64.decode64(image_data))
+
+      def tempfile.path
+        "/tmp/upload.png" 
+      end
+
+      ActionDispatch::Http::UploadedFile.new(tempfile: tempfile, content_type:'image/png', filename:'iphone.png')
     end
 
     def authenticate
