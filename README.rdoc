@@ -6,7 +6,7 @@ http://www.ey-office.com/images/photo_sns_server.png
 
 * File upload by CarrierWave
 * User authentication by Devise
-* Twitter Boststarp
+* Twitter Bootstrap
 * iOS application ( https://github.com/yuumi3/PhotoSnsApp ) interface
 * it can deploy to Heroku
 * RSpec Rails - Model specs
