@@ -7,7 +7,8 @@ body {
 }
 
 img {
-  @extend .img-responsive;
+  display: block;
+  height: auto;
   margin: 0 auto;
 }
 
