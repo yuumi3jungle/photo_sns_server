@@ -96,8 +96,12 @@ class PostsController < ApplicationController
 
     def authenticate
       if from_iphone?
-        resource = User.first # TODO 
-        sign_in :user, resource
+         authenticate_or_request_with_http_basic do |username,password|
+           resource = User.find_by(email: username)
+           if resource && resource.valid_password?(password)
+             sign_in :user, resource
+           end
+         end
        else
         authenticate_user!
       end
